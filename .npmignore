@@ -1,4 +1,4 @@
-wp
+*.swp
 *~
 *.iml
 .*.haste_cache.*
