@@ -1,21 +1,24 @@
-var jsdom = require('jsdom').jsdom;
+var jsdom = require('jsdom');
 
-var exposedProperties = ['window', 'navigator', 'document'];
-
-global.document = jsdom('');
+global.document = jsdom.jsdom('<!doctype html><html><body></body></html>');
 global.window = document.defaultView;
-Object.keys(document.defaultView).forEach((property) => {
-  if(typeof global[property] === 'undefined'){
-  	exposedProperties.push(property);
-  	global[property] = document.defaultView[property];
-  }
-});
+global.navigator = global.window.navigator;
 
-global.navigator = {
-  userAgent: 'node.js'
+propagateToGlobal(window);
+
+function propagateToGlobal (window) {
+    var key;
+    for (key in window) {
+        if (!window.hasOwnProperty(key)) continue;
+        if (key in global) continue;
+        global[key] = window[key]
+    }
 }
-
-documentRef = document;
 
 require('babel-core/register');
 require('babel-polyfill');
+
+process.on('unhandledRejection', function (error) {
+    console.error('Unhandled Promise Rejection:');
+    console.error(error && error.stack || error);
+});

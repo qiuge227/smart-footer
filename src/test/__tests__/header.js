@@ -4,7 +4,7 @@ import {shallow, mount, render} from 'enzyme';
 import {expect} from 'chai';
 import sinon from 'sinon';
 
-import MyComponent from '../index';
+import MyComponent from '../Header';
 
 describe('Shallow Rendering', () => {
 
